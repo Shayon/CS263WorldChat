@@ -1,6 +1,18 @@
 package WorldChat.WorldChat;
 
+import java.util.Date;
+
 import javax.servlet.http.HttpServletRequest;
+
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.EntityNotFoundException;
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
+import com.google.appengine.api.users.User;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 
 public class ChatIdGen 
 {
@@ -9,8 +21,6 @@ public class ChatIdGen
 	{
 		String country=req.getHeader("X-AppEngine-Country");
 		String city=req.getHeader("X-AppEngine-City");
-		//ONLY WORKS IF ONLY 1 PERSON FROM EACH CITY!!!
-		//Should handle if either are nulls!
 		String retstr;
 		if(country == null)
 		{
@@ -25,6 +35,27 @@ public class ChatIdGen
 		{
 			retstr = city+ ", "+country;
 		}
-		return retstr;
+		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+		Key chatKey = KeyFactory.createKey("chat", retstr);
+		int inc=1;
+		try
+		{	
+			while(true)
+			{
+				datastore.get(chatKey);
+				chatKey = KeyFactory.createKey("chat", retstr+inc);
+			}
+		}
+		catch(EntityNotFoundException e)
+		{
+			//We found an unused chatId
+		}
+	    Date date = new Date();
+	    Entity chatId = new Entity("chatId", chatKey);
+	    chatId.setProperty("date", date);
+
+	    
+	    datastore.put(chatId);
+		return retstr+inc;
 	}
 }
