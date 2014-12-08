@@ -29,6 +29,7 @@ public class ChatManager
 	//Add a new subscription
 	public static void addSub(String sub) 
 	{
+		System.err.println("In adding a sub*******************************************************");
 		subs.add(sub);
 	}
 
@@ -36,8 +37,11 @@ public class ChatManager
 	public static void sendMessage(String body, String source) 
 	{
 		Iterator<String> it = subs.iterator();
+		System.err.println("In sendMessage*******************************************************");
+		System.err.println("subs info "+subs.size()+"*******************************************");
 		while (it.hasNext()) 
 		{
+			System.err.println("Sending message "+source+"*******************************************************");
 			String sub = it.next();
 			String messageBody = source + ": " + body;
 

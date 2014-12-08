@@ -64,14 +64,27 @@
  
   
   
+  
+  <servlet>
+		<servlet-name>chat</servlet-name>
+		<servlet-class>WorldChat.WorldChat.ChatServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>chat</servlet-name>
+		<url-pattern>/chat</url-pattern>
+	</servlet-mapping>
+  
 	<servlet>
         <servlet-name>locationServlet</servlet-name>
-        <servlet-class>WorldChat.WorldChat.LocationServlet</servlet-class>
+        
+        <jsp-file>worldmap.jsp</jsp-file>
     </servlet>
     <servlet-mapping>
         <servlet-name>locationServlet</servlet-name>
-        <url-pattern>/locationServlet</url-pattern>
+        <url-pattern>/map</url-pattern>
     </servlet-mapping>
+   
+    
     
 <welcome-file-list>
         <welcome-file>welcome.jsp</welcome-file>
