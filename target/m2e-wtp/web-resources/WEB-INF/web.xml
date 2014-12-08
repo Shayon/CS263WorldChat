@@ -75,13 +75,12 @@
 	</servlet-mapping>
   
 	<servlet>
-        <servlet-name>locationServlet</servlet-name>
-        
+        <servlet-name>worldmap</servlet-name>  
         <jsp-file>worldmap.jsp</jsp-file>
     </servlet>
     <servlet-mapping>
-        <servlet-name>locationServlet</servlet-name>
-        <url-pattern>/map</url-pattern>
+        <servlet-name>worldmap</servlet-name>
+        <url-pattern>/worldmap</url-pattern>
     </servlet-mapping>
    
     
