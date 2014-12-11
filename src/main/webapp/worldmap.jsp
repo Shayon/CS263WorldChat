@@ -21,6 +21,7 @@
 				dataType:'text',
 				success: function(token) {
 					console.log(token);
+					System.err.println("the recieved token is "+token+"****************");
 					var channel = new goog.appengine.Channel(token);
 					var socket = channel.open();
 					

@@ -9,14 +9,23 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.appengine.api.channel.ChannelService;
 import com.google.appengine.api.channel.ChannelServiceFactory;
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.EntityNotFoundException;
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
+import com.google.appengine.api.datastore.Entity;
+
 
 @SuppressWarnings("serial")
 public class ChatServlet extends HttpServlet {
 	
 	//Generate a client token for the GAE Channel API
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
-		ChannelService channelService = ChannelServiceFactory.getChannelService();
+		//ChannelService channelService = ChannelServiceFactory.getChannelService();
 		System.err.println("In GET*******************************************************");
+		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+		
 		//Do we already have this user recognized?
 		Cookie[] cookies = req.getCookies();
 		if(cookies!=null)
@@ -26,27 +35,49 @@ public class ChatServlet extends HttpServlet {
 				if(cookies[x].getName().equals("WorldChat"))
 				{
 					System.err.println("In cookie found*******************************************************");
-					ChatManager.removeSub(cookies[x].getValue());
-					ChatManager.addSub(cookies[x].getValue());
-					//Already set up, reply with empty text
+					String clientId=cookies[x].getValue();
+					ChatManager.removeSub(clientId);
+					ChatManager.addSub(clientId);
+					//Already set up, get channelToken from datastore
+					Key chatKey = KeyFactory.createKey("chat", clientId);
+					String token="";
+					try {
+						token = (datastore.get(chatKey)).getProperty("channelToken").toString();
+					} catch (EntityNotFoundException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					System.err.println("token is "+token+"*******************************************************");
 					res.setContentType("text/plain");
-					res.getWriter().print("");
+					res.getWriter().print(token);
 					return;
 				}
 			}
 		}
 		//we did not find the Cookie so set one
 		//first we need to get the clientId to put into the cookie
-		String clientId = ChatIdGen.generateId(req);
+		String clientId = ChatIdGen.generateIdAndCreateChannel(req);
 		//now we build the cookie
 		System.err.println("In buildning new cookie*******************************************************");
 		Cookie cookie1 = new Cookie("WorldChat", clientId);
-        cookie1.setMaxAge(2*60*60); //2 hours
+        cookie1.setMaxAge(1*60); //1 min for texting, should increase later!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         res.addCookie(cookie1);
 		
 		//The token is based on the unique clientId that we created
-	    String token = channelService.createChannel(clientId);
-	    
+        //***Channel is now created in ChatIdGen
+	    //String token = channelService.createChannel(clientId);
+        Key chatKey = KeyFactory.createKey("chat", clientId);
+        System.err.println("key is chat "+clientId+"*******************************************************");
+		String token="";
+		try {
+			Entity ent= datastore.get(chatKey);
+			token = ent.getProperty("channelToken").toString();
+			System.err.println("token is "+token+"*******************************************************");
+		} catch (EntityNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
 	    //Subscribe this client
 	    ChatManager.addSub(clientId);
 	    

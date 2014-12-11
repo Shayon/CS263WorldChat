@@ -17,7 +17,9 @@
 		<img src="http://maps.googleapis.com/maps/api/staticmap?markers=color:blue%7Clabel:X%7C<%=request.getHeader("X-AppEngine-CityLatLong")%>&zoom=12&size=400x400&sensor=false" class="img-circle"/>
 		<br />
 		<p>Did we find you correctly? If we did, then why don't you...</p>
-		<button type="button" class="btn btn-info btn-lg" onclick="location.href='/worldmap';">Get Talking!</button>
+		<form action="/map" method="get">
+			<button type="submit" class="btn btn-info btn-lg" >Get Talking!</button>
+		</form>
 	</div>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 
