@@ -13,6 +13,24 @@ import com.google.appengine.api.channel.ChannelServiceFactory;
 public class ChatManager 
 {
 	private static HashSet<String> subs = new HashSet<String>();
+	private static String chatHistory="Start the Conversation!";
+	private static final int historySize=1500;
+	
+	private static void addToHistory(String addStr)
+	{
+		if(chatHistory.length() + addStr.length() <= historySize)
+			chatHistory+=addStr;
+		else
+		{
+			int toRemove = chatHistory.length() + addStr.length() - historySize;
+			chatHistory=chatHistory.substring(toRemove, chatHistory.length()) + addStr;
+		}
+	}
+	
+	public static String getChatHistory()
+	{
+		return chatHistory;
+	}
 	
 	//Check subscription
 	public static boolean isSubscribed(String sub) 
@@ -39,10 +57,11 @@ public class ChatManager
 		Iterator<String> it = subs.iterator();
 		System.err.println("In sendMessage*******************************************************");
 		System.err.println("subs info "+subs.size()+"*******************************************");
+		addToHistory("\n"+source + ": " + body);
 		while (it.hasNext()) 
-		{
-			System.err.println("Sending message "+source+"*******************************************************");
+		{	
 			String sub = it.next();
+			System.err.println("Sending message "+sub+"*******************************************************");
 			String messageBody = source + ": " + body;
 
 			ChannelService channelService = ChannelServiceFactory.getChannelService();

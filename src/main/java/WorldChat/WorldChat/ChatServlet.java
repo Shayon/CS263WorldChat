@@ -27,6 +27,7 @@ public class ChatServlet extends HttpServlet {
 		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 		
 		//Do we already have this user recognized?
+		//REPLACE WITH ChatIdGen.getClientId(req) WHEN DONE TESTING
 		Cookie[] cookies = req.getCookies();
 		if(cookies!=null)
 		{
@@ -90,15 +91,7 @@ public class ChatServlet extends HttpServlet {
 	public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException 
 	{
 		System.err.println("In POST*******************************************************");
-		Cookie[] cookies = req.getCookies();
-		String clientId="";
-		for(int x=0;x<cookies.length;x++)
-		{
-			if(cookies[x].getName().equals("WorldChat"))
-			{
-				clientId=cookies[x].getValue();
-			}
-		}
+		String clientId=ChatIdGen.getClientId(req);
 		System.err.println("client Id "+clientId+"*******************************************************");
 		if(clientId=="")
 		{

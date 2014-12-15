@@ -1,4 +1,7 @@
 <%@ page import="java.util.*"%>
+<%@ page import="com.google.appengine.api.blobstore.BlobstoreServiceFactory" %>
+<%@ page import="com.google.appengine.api.blobstore.BlobstoreService" %>
+<%@ page import="WorldChat.WorldChat.ChatManager" %>
 <html>
 <head>
 	<link href="/stylesheets/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -11,6 +14,7 @@
 		function onMessage(message) {
 			var current = $('textarea').val();
 			message && $('textarea').val(current + '\n' + message.data);
+			document.getElementById("textarea").scrollTop = document.getElementById("textarea").scrollHeight;
 		}
 	
 		//Initialize our little chat application
@@ -21,7 +25,6 @@
 				dataType:'text',
 				success: function(token) {
 					console.log(token);
-					System.err.println("the recieved token is "+token+"****************");
 					var channel = new goog.appengine.Channel(token);
 					var socket = channel.open();
 					
@@ -57,10 +60,10 @@
 </head>
 
 <body>
-	<div class="jumbotron" align="center">
+	<div class="jumbotron" align="center"> 
 		<h1>Welcome to World Chat, The Second page!</h1>
 	</div>
-	<div id="container">
+	<div id="container" align="center">
 		<header>
 			<div id="header">
 				<h1 class="section-heading">App Engine Chat</h1>
@@ -70,12 +73,22 @@
 			<div>
 				<h2 class="section-heading">Chat via this web page.</h2>
 				<!-- Chat inputs/output -->
-				<textarea readonly>Awaiting messages...</textarea>
+				<textarea readonly rows="9" cols="60"  ><%= ChatManager.getChatHistory() %></textarea>
 				<input placeholder="enter a message..."/>
 				<button class="button">Send Message</button>
 			</div>
 		</section>
 	</div>
+	
+	<%
+    	BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
+	%>
+	<p>Share a file with the world!</p>
+        <form action="<%= blobstoreService.createUploadUrl("/upload") %>" method="post" enctype="multipart/form-data">
+            <input type="text" name="foo">
+            <input type="file" name="myFile">
+            <button type="submit">Submit</button>
+        </form>
 	
 </body>
 

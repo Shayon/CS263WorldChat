@@ -2,6 +2,7 @@ package WorldChat.WorldChat;
 
 import java.util.Date;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 import com.google.appengine.api.datastore.DatastoreService;
@@ -62,5 +63,20 @@ public class ChatIdGen
 	    
 	    datastore.put(chatId);
 		return retstr+inc;
+	}
+	
+	//empty string if client not found
+	public static String getClientId(HttpServletRequest req)
+	{
+		Cookie[] cookies = req.getCookies();
+		String clientId="";
+		for(int x=0;cookies!= null && x<cookies.length;x++)
+		{
+			if(cookies[x].getName().equals("WorldChat"))
+			{
+				clientId=cookies[x].getValue();
+			}
+		}
+		return clientId;
 	}
 }
