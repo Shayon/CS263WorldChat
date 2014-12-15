@@ -101,6 +101,15 @@
         <url-pattern>/serve</url-pattern>
     </servlet-mapping>
     
+    <servlet>
+        <servlet-name>interactServlet</servlet-name>
+        <servlet-class>WorldChat.WorldChat.InteractServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>interactServlet</servlet-name>
+        <url-pattern>/interact</url-pattern>
+    </servlet-mapping>
+    
 <welcome-file-list>
         <welcome-file>welcome.jsp</welcome-file>
     </welcome-file-list>
