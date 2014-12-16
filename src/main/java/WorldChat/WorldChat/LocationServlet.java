@@ -1,6 +1,7 @@
 package WorldChat.WorldChat;
 
 import java.io.IOException;
+
 import javax.servlet.http.*;
 
 public class LocationServlet extends HttpServlet
@@ -12,4 +13,5 @@ public class LocationServlet extends HttpServlet
 	{
 		resp.sendRedirect("/worldmap.jsp");
 	}
+	
 }

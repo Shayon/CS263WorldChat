@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringEscapeUtils;
+
 import com.google.appengine.api.channel.ChannelService;
 import com.google.appengine.api.channel.ChannelServiceFactory;
 import com.google.appengine.api.datastore.DatastoreService;
@@ -111,7 +113,7 @@ public class ChatServlet extends HttpServlet {
 			res.getWriter().print("Error: Could not find Cookie!");
 		}
 		System.err.println("above send message*******************************************************");
-		ChatManager.sendMessage(req.getParameter("message"), clientId);
+		ChatManager.sendMessage(StringEscapeUtils.escapeHtml(req.getParameter("message")), clientId);
 		res.setContentType("text/plain");
 		res.getWriter().print("Success");
 	}

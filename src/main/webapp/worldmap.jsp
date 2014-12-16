@@ -5,15 +5,15 @@
 <html>
 <head>
 	<link href="/stylesheets/dist/css/bootstrap.min.css" rel="stylesheet">
-	
+	<link href="/stylesheets/specialtext.css" rel="stylesheet">
 	<script type="text/javascript" src="/_ah/channel/jsapi"></script>
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	
 	 <script type="text/javascript" charset="utf-8">
 		//handle incoming chat messages, pushed by App Engine
 		function onMessage(message) {
-			var current = $('#p10').val();
-			message && $('#p10').val(current + '\n' + message.data);
+			var current = $('#specialtextarea').val();
+			$('#specialtextarea').val(current + '\n' + message.data);
 			
 		}
 	
@@ -73,7 +73,7 @@
 			<div>
 				<h2 class="section-heading">Chat via this web page.</h2>
 				<!-- Chat inputs/output -->
-				<textarea id="p10" readonly rows="9" cols="60"  ><%= ChatManager.getChatHistory() %></textarea>
+				<div id="specialtextarea"><%= ChatManager.getChatHistory() %></div>
 				<input placeholder="enter a message..."/>
 				<button class="button">Send Message</button>
 			</div>
