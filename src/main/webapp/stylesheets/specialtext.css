@@ -1,6 +1,6 @@
 specialtextarea {
-    height: 28px;
-    width: 400px;
+    height: 150px;
+    width: 600px;
 }
 
 #specialtextarea {
@@ -9,9 +9,11 @@ specialtextarea {
     border: 1px solid gray;
     font: medium -moz-fixed;
     font: -webkit-small-control;
-    height: 28px;
+    height: 150px;
     overflow: auto;
-    padding: 2px;
-    resize: both;
-    width: 400px;
+	word-wrap: break-word;
+    padding: 3px;
+    /*resize: both;*/
+    whitespace: pre;
+    width: 600px;
 }

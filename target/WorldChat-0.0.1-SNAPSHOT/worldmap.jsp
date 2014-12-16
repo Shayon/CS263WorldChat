@@ -12,8 +12,8 @@
 	 <script type="text/javascript" charset="utf-8">
 		//handle incoming chat messages, pushed by App Engine
 		function onMessage(message) {
-			var current = $('#specialtextarea').val();
-			$('#specialtextarea').val(current + '\n' + message.data);
+			var current = $('#specialtextarea').html();
+			$('#specialtextarea').html(current + '</br>' + message.data);
 			
 		}
 	
@@ -61,7 +61,7 @@
 
 <body>
 	<div class="jumbotron" align="center"> 
-		<h1>Welcome to World Chat, The Second page!</h1>
+		<h1>Jump In And Chat!</h1>
 	</div>
 	<div id="container" align="center">
 		<header>
@@ -73,7 +73,7 @@
 			<div>
 				<h2 class="section-heading">Chat via this web page.</h2>
 				<!-- Chat inputs/output -->
-				<div id="specialtextarea"><%= ChatManager.getChatHistory() %></div>
+				<div align="left" id="specialtextarea"><%= ChatManager.getChatHistory() %></div>
 				<input placeholder="enter a message..."/>
 				<button class="button">Send Message</button>
 			</div>

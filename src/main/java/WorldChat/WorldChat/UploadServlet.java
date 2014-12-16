@@ -37,7 +37,7 @@ public class UploadServlet extends HttpServlet {
         {
         	System.err.println("about to upload and post message**********************************");
         	res.sendRedirect("/map");
-        	String message=clientId+" has uploaded an file to share, get it at http://worldchat263.appspot.com/serve?blob-key="+ blobKey.getKeyString();
+        	String message="<a href=\"/serve?blob-key=" + blobKey.getKeyString() + "\">" + clientId+" has uploaded an file to share, click here to get it!</a>";
             ChatManager.sendMessage(message,"SERVER");
             return;
         }
