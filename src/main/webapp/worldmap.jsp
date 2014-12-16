@@ -13,7 +13,8 @@
 		//handle incoming chat messages, pushed by App Engine
 		function onMessage(message) {
 			var current = $('#specialtextarea').html();
-			$('#specialtextarea').html(current + '</br>' + message.data);
+			$('#specialtextarea').html(current + '\n' + message.data);
+			$("#specialtextarea").scrollTop($("#specialtextarea")[0].scrollHeight);
 			
 		}
 	
@@ -30,6 +31,7 @@
 					
 					//Assign our handler function to the open socket
 					socket.onmessage = onMessage;
+					$("#specialtextarea").scrollTop($("#specialtextarea")[0].scrollHeight);
 				}
 			});
 			
@@ -39,18 +41,18 @@
 					method:'POST',
 					dataType:'text',
 					data: {
-						message:$('input').val()
+						message:$('#messageInput').val()
 					},
 					success:function(response) {
-						$('input').val('').focus();
+						$('#messageInput').val('').focus();
 						console.log(response);
 					}
 				});
 			}
 			
 			//Attach event handlers
-			$('button').on('click', submitMessage);
-			$('input').keypress(function (e) {
+			$('#messageButton').on('click', submitMessage);
+			$('#messageInput').keypress(function (e) {
 				if (e.which == 13) {
 					submitMessage();
 				}
@@ -74,8 +76,8 @@
 				<h2 class="section-heading">Chat via this web page.</h2>
 				<!-- Chat inputs/output -->
 				<div align="left" id="specialtextarea"><%= ChatManager.getChatHistory() %></div>
-				<input placeholder="enter a message..."/>
-				<button class="button">Send Message</button>
+				<input id="messageInput" placeholder="enter a message..."/>
+				<button id="messageButton" class="button">Send Message</button>
 			</div>
 		</section>
 	</div>
