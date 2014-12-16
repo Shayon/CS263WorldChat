@@ -17,7 +17,12 @@ import com.google.appengine.api.channel.ChannelServiceFactory;
 
 public class ChatIdGen 
 {
-
+	/**
+	 * Generates a unique ClientId creates a Channel with it
+	 * 
+	 * @param req request where we get the country and city from the header
+	 * @return a string that is the unique ClientId that was created
+	 */
 	public static String generateIdAndCreateChannel(HttpServletRequest req)
 	{
 		String country=req.getHeader("X-AppEngine-Country");
@@ -65,7 +70,12 @@ public class ChatIdGen
 		return retstr+inc;
 	}
 	
-	//empty string if client not found
+	/**
+	 * Gets the ClientId from the Users cookies
+	 * 
+	 * @param req request from which we get the cookies
+	 * @return the ClientId on the cookie, if we don't find the cookie, empty string is returned
+	 */
 	public static String getClientId(HttpServletRequest req)
 	{
 		Cookie[] cookies = req.getCookies();

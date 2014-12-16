@@ -20,7 +20,14 @@ import com.google.appengine.api.datastore.Entity;
 @SuppressWarnings("serial")
 public class ChatServlet extends HttpServlet {
 	
-	//Generate a client token for the GAE Channel API
+	/**
+	 * Sets cookie and sets up client for chatting
+	 * <p>
+	 * Checks if client already has our cookie, if client does not, we give them a cookie.
+	 * Then we generate a clientId if no cookie was found, and subscribe them to the chat.
+	 * </p>
+	 * 
+	 */
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
 		//ChannelService channelService = ChannelServiceFactory.getChannelService();
 		System.err.println("In GET*******************************************************");
@@ -87,7 +94,10 @@ public class ChatServlet extends HttpServlet {
 		res.getWriter().print(token);
 	}
 
-	//Publish a chat message to all subscribers, if this subscriber exists
+	/**
+	 * Publish a chat message to all subscribers, if this subscriber exists
+	 * 
+	 */
 	public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException 
 	{
 		System.err.println("In POST*******************************************************");

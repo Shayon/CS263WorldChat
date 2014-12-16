@@ -12,7 +12,10 @@ import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 
 public class Serve extends HttpServlet {
     private BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
-
+    
+    /**
+     * Serves up the files uploaded to the blobstore
+     */
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse res)
         throws IOException {

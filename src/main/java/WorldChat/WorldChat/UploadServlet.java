@@ -15,6 +15,9 @@ import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 public class UploadServlet extends HttpServlet {
     private BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
 
+    /**
+     * Uploads the file the user selected into the blobstore and posts link to chat
+     */
     @Override
     public void doPost(HttpServletRequest req, HttpServletResponse res)
         throws ServletException, IOException {
