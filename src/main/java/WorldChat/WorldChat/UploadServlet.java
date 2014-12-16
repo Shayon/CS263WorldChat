@@ -23,7 +23,7 @@ public class UploadServlet extends HttpServlet {
         throws ServletException, IOException {
 
         Map<String, BlobKey> blobs = blobstoreService.getUploadedBlobs(req);
-        BlobKey blobKey = blobs.get("myImage");
+        BlobKey blobKey = blobs.get("myFile");
         
         String clientId=ChatIdGen.getClientId(req);
         if(clientId == "")
@@ -35,6 +35,7 @@ public class UploadServlet extends HttpServlet {
         } 
         else 
         {
+        	System.err.println("about to upload and post message**********************************");
         	res.sendRedirect("/map");
         	String message=clientId+" has uploaded an file to share, get it at http://worldchat263.appspot.com/serve?blob-key="+ blobKey.getKeyString();
             ChatManager.sendMessage(message,"SERVER");

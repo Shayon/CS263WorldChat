@@ -9,14 +9,12 @@
 	<script type="text/javascript" src="/_ah/channel/jsapi"></script>
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	
-	<script type="text/javascript" charset="utf-8">
-		document.getElementById("textarea").scrollTop = document.getElementById("textarea").scrollHeight 
-	</script>
 	 <script type="text/javascript" charset="utf-8">
 		//handle incoming chat messages, pushed by App Engine
 		function onMessage(message) {
-			var current = $('textarea').val();
-			message && $('textarea').val(current + '\n' + message.data);
+			var current = $('#p10').val();
+			message && $('#p10').val(current + '\n' + message.data);
+			
 		}
 	
 		//Initialize our little chat application
@@ -75,7 +73,7 @@
 			<div>
 				<h2 class="section-heading">Chat via this web page.</h2>
 				<!-- Chat inputs/output -->
-				<textarea readonly rows="9" cols="60"  ><%= ChatManager.getChatHistory() %></textarea>
+				<textarea id="p10" readonly rows="9" cols="60"  ><%= ChatManager.getChatHistory() %></textarea>
 				<input placeholder="enter a message..."/>
 				<button class="button">Send Message</button>
 			</div>
@@ -85,11 +83,11 @@
 	<%
     	BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
 	%>
-	<p>Share a picture</p>
+	<p>Share a file with the world!</p>
         <form action="<%= blobstoreService.createUploadUrl("/upload") %>" method="post" enctype="multipart/form-data">
             <input type="text" name="foo">
-            <input type="file" name="myImage">
-            <input type="submit" value="Submit">
+            <input type="file" name="myFile">
+            <button type="submit">Submit</button>
         </form>
 	
 </body>

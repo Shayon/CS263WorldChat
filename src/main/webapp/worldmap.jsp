@@ -12,9 +12,9 @@
 	 <script type="text/javascript" charset="utf-8">
 		//handle incoming chat messages, pushed by App Engine
 		function onMessage(message) {
-			var current = $('textarea').val();
-			message && $('textarea').val(current + '\n' + message.data);
-			document.getElementById("textarea").scrollTop = document.getElementById("textarea").scrollHeight;
+			var current = $('#p10').val();
+			message && $('#p10').val(current + '\n' + message.data);
+			
 		}
 	
 		//Initialize our little chat application
@@ -73,7 +73,7 @@
 			<div>
 				<h2 class="section-heading">Chat via this web page.</h2>
 				<!-- Chat inputs/output -->
-				<textarea readonly rows="9" cols="60"  ><%= ChatManager.getChatHistory() %></textarea>
+				<textarea id="p10" readonly rows="9" cols="60"  ><%= ChatManager.getChatHistory() %></textarea>
 				<input placeholder="enter a message..."/>
 				<button class="button">Send Message</button>
 			</div>

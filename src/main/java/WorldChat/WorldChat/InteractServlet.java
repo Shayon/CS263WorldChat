@@ -25,7 +25,7 @@ public class InteractServlet extends HttpServlet {
     public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException 
     {
     	Gson gson = new Gson();
-    	String message=gson.fromJson(req.getRequestURI(), String.class);
+    	String message=gson.fromJson(req.getParameter("message"), String.class);
     	ChatManager.sendMessage(message, "API User");
     }
 }
