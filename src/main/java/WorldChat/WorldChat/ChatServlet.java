@@ -85,7 +85,7 @@ public class ChatServlet extends HttpServlet {
 		//now we build the cookie
 		System.err.println("In buildning new cookie*******************************************************");
 		Cookie cookie1 = new Cookie("WorldChat", clientId);
-        cookie1.setMaxAge(1*60); //1 min for texting, should increase later!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        cookie1.setMaxAge(2*60*60); //cookie life of 2 hours
         res.addCookie(cookie1);
 		
 		//The token is based on the unique clientId that we created
