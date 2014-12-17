@@ -1,6 +1,7 @@
 package WorldChat.WorldChat;
 
 import java.io.IOException;
+import java.util.logging.Level;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
@@ -17,6 +18,9 @@ import com.google.appengine.api.datastore.EntityNotFoundException;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.memcache.ErrorHandlers;
+import com.google.appengine.api.memcache.MemcacheService;
+import com.google.appengine.api.memcache.MemcacheServiceFactory;
 
 
 @SuppressWarnings("serial")
@@ -34,7 +38,8 @@ public class ChatServlet extends HttpServlet {
 		//ChannelService channelService = ChannelServiceFactory.getChannelService();
 		System.err.println("In GET*******************************************************");
 		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-		
+		MemcacheService syncCache = MemcacheServiceFactory.getMemcacheService();
+   	 	syncCache.setErrorHandler(ErrorHandlers.getConsistentLogAndContinue(Level.INFO));
 		//Do we already have this user recognized?
 		//REPLACE WITH ChatIdGen.getClientId(req) WHEN DONE TESTING
 		Cookie[] cookies = req.getCookies();
@@ -51,8 +56,17 @@ public class ChatServlet extends HttpServlet {
 					//Already set up, get channelToken from datastore
 					Key chatKey = KeyFactory.createKey("chat", clientId);
 					String token="";
-					try {
-						token = (datastore.get(chatKey)).getProperty("channelToken").toString();
+					try 
+					{
+						if(syncCache.get(chatKey)!=null)
+						{
+							token = ((Entity)syncCache.get(chatKey)).getProperty("channelToken").toString();
+						}
+						else
+						{
+							token = (datastore.get(chatKey)).getProperty("channelToken").toString();
+						}
+						
 					} catch (EntityNotFoundException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -80,7 +94,15 @@ public class ChatServlet extends HttpServlet {
         System.err.println("key is chat "+clientId+"*******************************************************");
 		String token="";
 		try {
-			Entity ent= datastore.get(chatKey);
+			Entity ent=null;
+			if(syncCache.get(chatKey)!=null)
+			{
+				ent=(Entity)syncCache.get(chatKey);
+			}
+			else
+			{
+				ent= datastore.get(chatKey);
+			}
 			token = ent.getProperty("channelToken").toString();
 			System.err.println("token is "+token+"*******************************************************");
 		} catch (EntityNotFoundException e) {

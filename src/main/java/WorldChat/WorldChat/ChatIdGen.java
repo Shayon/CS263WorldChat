@@ -1,6 +1,7 @@
 package WorldChat.WorldChat;
 
 import java.util.Date;
+import java.util.logging.Level;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -11,6 +12,9 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.EntityNotFoundException;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
+import com.google.appengine.api.memcache.ErrorHandlers;
+import com.google.appengine.api.memcache.MemcacheService;
+import com.google.appengine.api.memcache.MemcacheServiceFactory;
 import com.google.appengine.api.channel.ChannelService;
 import com.google.appengine.api.channel.ChannelServiceFactory;
 
@@ -42,14 +46,16 @@ public class ChatIdGen
 			retstr = city+ ", "+country;
 		}
 		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+		MemcacheService syncCache = MemcacheServiceFactory.getMemcacheService();
+   	 	syncCache.setErrorHandler(ErrorHandlers.getConsistentLogAndContinue(Level.INFO));
 		
 		int inc=1;
 		Key chatKey = KeyFactory.createKey("chat", retstr+inc);
 		try
 		{	
 			while(true)
-			{
-				datastore.get(chatKey);
+			{	if(syncCache.get(chatKey)==null)
+					datastore.get(chatKey);
 				inc++;
 				chatKey = KeyFactory.createKey("chat", retstr+inc);
 			}
@@ -67,6 +73,7 @@ public class ChatIdGen
 	    chatId.setProperty("channelToken",token);
 	    
 	    datastore.put(chatId);
+	    syncCache.put(chatKey, chatId);
 		return retstr+inc;
 	}
 	
