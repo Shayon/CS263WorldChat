@@ -18,6 +18,9 @@ import com.google.gson.Gson;
 public class InteractServlet extends HttpServlet {
    
 
+	/**
+	 * responds with the ChatHistory in JSON
+	 */
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException 
     {
@@ -27,6 +30,11 @@ public class InteractServlet extends HttpServlet {
         
     }
     
+    /**
+     * sends the message in the parameter to the chat
+     * <p>
+     * Task Queue is used to space out posting the messages.  Each message is spaced by 500 milliseconds.  
+     */
     @Override
     public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException 
     {

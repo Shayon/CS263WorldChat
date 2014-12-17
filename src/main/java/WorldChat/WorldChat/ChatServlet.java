@@ -1,4 +1,5 @@
 package WorldChat.WorldChat;
+//CODE ON THIS PAGE WAS SUPPLEMENTED BY https://github.com/kwhinnery/gae-chat
 
 import java.io.IOException;
 import java.util.logging.Level;
@@ -31,7 +32,7 @@ public class ChatServlet extends HttpServlet {
 	 * <p>
 	 * Checks if client already has our cookie, if client does not, we give them a cookie.
 	 * Then we generate a clientId if no cookie was found, and subscribe them to the chat.
-	 * </p>
+	 * 
 	 * 
 	 */
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {

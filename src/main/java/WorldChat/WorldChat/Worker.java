@@ -9,7 +9,9 @@ import javax.servlet.http.HttpServletResponse;
 
 
 
-//The Worker servlet should be mapped to the "/worker" URL.
+/**
+ * Processes the task queue, posts each message from the API User's to the chat.
+ */
 public class Worker extends HttpServlet {
  protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
  {

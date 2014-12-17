@@ -1,5 +1,5 @@
 package WorldChat.WorldChat;
-
+//CODE ON THIS PAGE WAS SUPPLEMENTED BY https://github.com/kwhinnery/gae-chat
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;

@@ -4,6 +4,7 @@
 <%@ page import="com.google.appengine.api.blobstore.BlobstoreService" %>
 <%@ page import="WorldChat.WorldChat.ChatManager" %>
 <html>
+<!-- CODE ON THIS PAGE WAS SUPPLEMENTED BY https://github.com/kwhinnery/gae-chat -->
 <head>
 	<link href="/stylesheets/dist/css/bootstrap.min.css" rel="stylesheet">
 	<link href="/stylesheets/specialtext.css" rel="stylesheet">

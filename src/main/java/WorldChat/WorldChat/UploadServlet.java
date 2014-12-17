@@ -19,6 +19,8 @@ public class UploadServlet extends HttpServlet {
 
     /**
      * Uploads the file the user selected into the blobstore and posts link to chat
+     * <p>
+     * If the blobKey is nul or if the Filename passed in is blank or if the clientId could not be found, we redirect to /map
      */
     @Override
     public void doPost(HttpServletRequest req, HttpServletResponse res)
