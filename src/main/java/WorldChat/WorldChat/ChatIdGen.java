@@ -79,7 +79,6 @@ public class ChatIdGen
 		{
 			//We found an unused chatId
 		}
-		System.err.println("key is"+chatKey.toString()+"*******************************************************");
 	    Date date = new Date();
 	    Entity chatId = new Entity(chatKey);
 	    chatId.setProperty("date", date);

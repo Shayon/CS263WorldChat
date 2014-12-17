@@ -74,7 +74,6 @@ public class ChatManager
 	 */
 	public static void addSub(String sub) 
 	{
-		System.err.println("In adding a sub*******************************************************");
 		subs.add(sub);
 	}
 
@@ -87,13 +86,10 @@ public class ChatManager
 	public static void sendMessage(String body, String source) 
 	{
 		Iterator<String> it = subs.iterator();
-		System.err.println("In sendMessage*******************************************************");
-		System.err.println("subs info "+subs.size()+"*******************************************");
 		addToHistory("\n"+source + ": " + body);
 		while (it.hasNext()) 
 		{	
 			String sub = it.next();
-			System.err.println("Sending message "+sub+"*******************************************************");
 			String messageBody = source + ": " + body;
 
 			ChannelService channelService = ChannelServiceFactory.getChannelService();

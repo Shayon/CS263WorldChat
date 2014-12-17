@@ -37,7 +37,6 @@ public class ChatServlet extends HttpServlet {
 	 */
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
 		//ChannelService channelService = ChannelServiceFactory.getChannelService();
-		System.err.println("In GET*******************************************************");
 		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 		MemcacheService syncCache = MemcacheServiceFactory.getMemcacheService();
    	 	syncCache.setErrorHandler(ErrorHandlers.getConsistentLogAndContinue(Level.INFO));
@@ -50,7 +49,6 @@ public class ChatServlet extends HttpServlet {
 			{
 				if(cookies[x].getName().equals("WorldChat"))
 				{
-					System.err.println("In cookie found*******************************************************");
 					String clientId=cookies[x].getValue();
 					ChatManager.removeSub(clientId);
 					ChatManager.addSub(clientId);
@@ -72,7 +70,6 @@ public class ChatServlet extends HttpServlet {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					System.err.println("token is "+token+"*******************************************************");
 					res.setContentType("text/plain");
 					res.getWriter().print(token);
 					return;
@@ -83,7 +80,6 @@ public class ChatServlet extends HttpServlet {
 		//first we need to get the clientId to put into the cookie
 		String clientId = ChatIdGen.generateIdAndCreateChannel(req);
 		//now we build the cookie
-		System.err.println("In buildning new cookie*******************************************************");
 		Cookie cookie1 = new Cookie("WorldChat", clientId);
         cookie1.setMaxAge(2*60*60); //cookie life of 2 hours
         res.addCookie(cookie1);
@@ -92,7 +88,6 @@ public class ChatServlet extends HttpServlet {
         //***Channel is now created in ChatIdGen
 	    //String token = channelService.createChannel(clientId);
         Key chatKey = KeyFactory.createKey("chat", clientId);
-        System.err.println("key is chat "+clientId+"*******************************************************");
 		String token="";
 		try {
 			Entity ent=null;
@@ -105,7 +100,6 @@ public class ChatServlet extends HttpServlet {
 				ent= datastore.get(chatKey);
 			}
 			token = ent.getProperty("channelToken").toString();
-			System.err.println("token is "+token+"*******************************************************");
 		} catch (EntityNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -125,13 +119,10 @@ public class ChatServlet extends HttpServlet {
 	 */
 	public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException 
 	{
-		System.err.println("In POST*******************************************************");
 		String clientId=ChatIdGen.getClientId(req);
-		System.err.println("client Id "+clientId+"*******************************************************");
 		if(clientId=="")
 		{
 			//Something went wrong!
-			System.err.println("couldn't find cookie*******************************************************");
 			res.setContentType("text/plain");
 			res.getWriter().print("Error: Could not find Cookie!");
 			//res.sendRedirect("/map");
@@ -139,13 +130,11 @@ public class ChatServlet extends HttpServlet {
 			clientId="Unkown User";
 			
 		}
-		System.err.println("above send message*******************************************************");
 		ChatManager.sendMessage(StringEscapeUtils.escapeHtml(req.getParameter("message")), clientId);
 		res.setContentType("text/plain");
 		res.getWriter().print("Success");
 		if(clientId=="Unkown User")
 		{
-			System.err.println("********BEFORE REDIRECT*******");
 			res.sendRedirect("/chat");	
 		}
 	}
