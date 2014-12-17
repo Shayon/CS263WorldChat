@@ -1,3 +1,4 @@
+<%@page import="WorldChat.WorldChat.ChatIdGen"%>
 <%@ page import="java.util.*"%>
 <%@ page import="com.google.appengine.api.blobstore.BlobstoreServiceFactory" %>
 <%@ page import="com.google.appengine.api.blobstore.BlobstoreService" %>
@@ -84,11 +85,12 @@
 	
 	<%
     	BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
+		String fileName = String.valueOf(System.currentTimeMillis());
 	%>
 	<p>Share a file with the world!</p>
         <form action="<%= blobstoreService.createUploadUrl("/upload") %>" method="post" enctype="multipart/form-data">
-            <input type="text" name="foo">
-            <input type="file" name="myFile">
+            <input hidden="true" name="fileName" value="<%= fileName %>">
+            <input type="file" name="<%= fileName %>">
             <button type="submit">Submit</button>
         </form>
 	

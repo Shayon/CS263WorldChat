@@ -1,6 +1,7 @@
 package WorldChat.WorldChat;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.appengine.api.blobstore.BlobKey;
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
+import com.google.appengine.api.blobstore.FileInfo;
 
 public class UploadServlet extends HttpServlet {
     private BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
@@ -22,13 +24,18 @@ public class UploadServlet extends HttpServlet {
     public void doPost(HttpServletRequest req, HttpServletResponse res)
         throws ServletException, IOException {
 
-        Map<String, BlobKey> blobs = blobstoreService.getUploadedBlobs(req);
-        BlobKey blobKey = blobs.get("myFile");
+    	String fileName = req.getParameter("fileName");
+        Map<String, List<BlobKey>> blobs = blobstoreService.getUploads(req);
+        Map<String, List<FileInfo>> fileInfos = blobstoreService.getFileInfos(req);
+        List<BlobKey> keyList = blobs.get(fileName);
+        List<FileInfo> infoList = fileInfos.get(fileName);
+        BlobKey blobKey = keyList.get(0);
+        FileInfo info = infoList.get(0);
+        
         
         String clientId=ChatIdGen.getClientId(req);
-        if(clientId == "")
-        	clientId = "Unkown User";
-        if (blobKey == null) 
+        
+        if (blobKey == null || info.getFilename().equals("") || clientId == "") 
         {
         	res.sendRedirect("/map");
             return;
