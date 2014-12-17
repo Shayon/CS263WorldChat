@@ -105,20 +105,25 @@ public class ChatServlet extends HttpServlet {
 		System.err.println("In POST*******************************************************");
 		String clientId=ChatIdGen.getClientId(req);
 		System.err.println("client Id "+clientId+"*******************************************************");
-		while(clientId=="")
+		if(clientId=="")
 		{
 			//Something went wrong!
 			System.err.println("couldn't find cookie*******************************************************");
 			res.setContentType("text/plain");
 			res.getWriter().print("Error: Could not find Cookie!");
-			res.sendRedirect("/map");
-			return;
-			//doGet(req,res);
-			//clientId=ChatIdGen.getClientId(req);
+			//res.sendRedirect("/map");
+			//return;
+			clientId="Unkown User";
+			
 		}
 		System.err.println("above send message*******************************************************");
 		ChatManager.sendMessage(StringEscapeUtils.escapeHtml(req.getParameter("message")), clientId);
 		res.setContentType("text/plain");
 		res.getWriter().print("Success");
+		if(clientId=="Unkown User")
+		{
+			System.err.println("********BEFORE REDIRECT*******");
+			res.sendRedirect("/chat");	
+		}
 	}
 }
