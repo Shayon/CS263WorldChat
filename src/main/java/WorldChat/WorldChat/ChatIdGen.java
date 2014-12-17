@@ -23,6 +23,8 @@ public class ChatIdGen
 {
 	/**
 	 * Generates a unique ClientId creates a Channel with it
+	 * <p>
+	 * We reuse old clientId's if we can assure that their cookie has expired
 	 * 
 	 * @param req request where we get the country and city from the header
 	 * @return a string that is the unique ClientId that was created
@@ -54,8 +56,21 @@ public class ChatIdGen
 		try
 		{	
 			while(true)
-			{	if(syncCache.get(chatKey)==null)
-					datastore.get(chatKey);
+			{	
+				Entity ent = (Entity) syncCache.get(chatKey);
+				if(ent==null)
+				{
+					ent = datastore.get(chatKey);
+				}
+				//Reuse old id's if their cookie is expired
+				Date recorded= (Date) ent.getProperty("date");
+				Date current = new Date();
+				long hourDifference = (current.getTime() - recorded.getTime())/(60 * 60 * 1000);
+				if(hourDifference >= 2)
+				{
+					break;
+				}
+				
 				inc++;
 				chatKey = KeyFactory.createKey("chat", retstr+inc);
 			}

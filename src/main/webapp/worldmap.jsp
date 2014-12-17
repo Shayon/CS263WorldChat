@@ -4,7 +4,8 @@
 <%@ page import="com.google.appengine.api.blobstore.BlobstoreService" %>
 <%@ page import="WorldChat.WorldChat.ChatManager" %>
 <html>
-<!-- CODE ON THIS PAGE WAS SUPPLEMENTED BY https://github.com/kwhinnery/gae-chat -->
+<!-- CODE ON THIS PAGE WAS SUPPLEMENTED BY https://github.com/kwhinnery/gae-chat 
+	 AS WELL AS http://stackoverflow.com/a/2664878-->
 <head>
 	<link href="/stylesheets/dist/css/bootstrap.min.css" rel="stylesheet">
 	<link href="/stylesheets/specialtext.css" rel="stylesheet">
@@ -70,12 +71,11 @@
 	<div id="container" align="center">
 		<header>
 			<div id="header">
-				<h1 class="section-heading">App Engine Chat</h1>
+				<h1 class="section-heading">Talk with people from around the world!</h1>
 			</div>
 		</header>
 		<section>
 			<div>
-				<h2 class="section-heading">Chat via this web page.</h2>
 				<!-- Chat inputs/output -->
 				<div align="left" id="specialtextarea"><%= ChatManager.getChatHistory() %></div>
 				<input id="messageInput" placeholder="enter a message..."/>
@@ -84,17 +84,24 @@
 		</section>
 	</div>
 	
-	<%
-    	BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
-		String fileName = String.valueOf(System.currentTimeMillis());
-	%>
-	<p>Share a file with the world!</p>
-        <form action="<%= blobstoreService.createUploadUrl("/upload") %>" method="post" enctype="multipart/form-data">
-            <input hidden="true" name="fileName" value="<%= fileName %>">
-            <input type="file" name="<%= fileName %>">
-            <button type="submit">Submit</button>
-        </form>
 	
+	<div class="row">
+		<div class="col-xs-6 col-sm-3"></div>
+		<div class="col-xs-6 col-sm-3">
+			<%
+    			BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
+				String fileName = String.valueOf(System.currentTimeMillis());
+			%>
+			<p>Share a file with the world!</p>
+        		<form action="<%= blobstoreService.createUploadUrl("/upload") %>" method="post" enctype="multipart/form-data">
+            		<input hidden="true" name="fileName" value="<%= fileName %>">
+            		<input type="file" name="<%= fileName %>">
+            		<button type="submit">Submit</button>
+        		</form>
+        </div>
+        <div class="col-xs-6 col-sm-3"></div>
+        <div class="col-xs-6 col-sm-3"></div>
+	</div>
 </body>
 
 

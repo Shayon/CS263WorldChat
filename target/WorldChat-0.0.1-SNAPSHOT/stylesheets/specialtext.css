@@ -13,7 +13,8 @@ specialtextarea {
     height: 150px;
     overflow: auto;
 	word-wrap: break-word;
-    padding: 3px;
+	padding: 3px;
+    margin-bottom: 15px;
     /*resize: both;*/
     white-space: pre-wrap;
     width: 600px;
